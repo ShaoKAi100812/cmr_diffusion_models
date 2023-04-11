@@ -47,6 +47,7 @@ class CMR2DDataModule(pl.LightningDataModule):
     #     label_training_paths = sorted(glob(os.path.join(self.dataset_dir, 'labelsTr', "*.nii*")))
     #     image_test_paths = sorted(glob(os.path.join(self.dataset_dir, 'imagesTs', "*.nii*")))
     #     return image_training_paths, label_training_paths, image_test_paths
+    
     def list_data(self):
         image_test_list = []
         image_list = []
@@ -190,6 +191,7 @@ class CMRCineDataModule(pl.LightningDataModule):
     #     label_training_paths = sorted(glob(os.path.join(self.dataset_dir, 'labelsTr', "*.nii*")))
     #     image_test_paths = sorted(glob(os.path.join(self.dataset_dir, 'imagesTs', "*.nii*")))
     #     return image_training_paths, label_training_paths, image_test_paths
+    
     def list_data(self):
 
         images = []

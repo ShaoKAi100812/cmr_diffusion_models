@@ -16,6 +16,7 @@ sys.argv=['']
 del sys
 
 class Diffusion:
+    
     def __init__(self, noise_steps=1000, beta_start=1e-4, beta_end=0.02, img_size=256, device="cuda", schedule_name='cosine'):
         self.noise_steps = noise_steps
         self.beta_start = beta_start
@@ -27,6 +28,7 @@ class Diffusion:
         self.beta = self.prepare_noise_schedule().to(device)
         self.alpha = 1. - self.beta
         self.alpha_hat = torch.cumprod(self.alpha, dim=0)
+        
     ### start schedulers
     def prepare_noise_schedule(self):
         if self.schedule_name == "linear":
@@ -43,6 +45,7 @@ class Diffusion:
             return self.sigmoid_beta_schedule()
         else:
             raise NotImplementedError(f"unknown beta schedule: {self.schedule_name}")
+        
     def betas_for_alpha_bar(self, alpha_bar, max_beta=0.999):
         """
         Create a beta schedule that discretizes the given alpha_t_bar function,
@@ -61,6 +64,7 @@ class Diffusion:
             t2 = (i + 1) / num_diffusion_timesteps
             betas.append(min(1 - alpha_bar(t2) / alpha_bar(t1), max_beta))
         return torch.from_numpy(np.array(betas))
+    
     def cosine_beta_schedule(self, s=0.008):
         """
         cosine schedule as proposed in https://arxiv.org/abs/2102.09672
@@ -74,15 +78,12 @@ class Diffusion:
         return torch.clip(betas, 0.0001, 0.9999)
 
     def linear_beta_schedule(self):
-
         return torch.linspace(self.beta_start, self.beta_end, self.noise_steps)
 
     def quadratic_beta_schedule(self):
-
         return torch.linspace(self.beta_start**0.5, self.beta_end**0.5, self.noise_steps) ** 2
 
     def sigmoid_beta_schedule(self):
-
         betas = torch.linspace(-6, 6, self.noise_steps)
         return torch.sigmoid(betas) * (self.beta_end - self.beta_start) + self.beta_start
     #### end schedulers
@@ -204,6 +205,7 @@ def train(default_config):
     
     wandb.finish()
 
+
 def log_image_table(images, x_t, noise, predicted_noise, loss):
     # 4. Log metrics to visualize performance
     wandb.log({"MSE_loss": loss.item()})
@@ -214,9 +216,8 @@ def log_image_table(images, x_t, noise, predicted_noise, loss):
         my_table.add_data(wandb.Image(img.detach().cpu().numpy()), wandb.Image(nimg.detach().cpu().numpy()), wandb.Image(noi.detach().cpu().numpy()), wandb.Image(pnoi.detach().cpu().numpy()))
     wandb.log({"training procedure": my_table})
 
+
 def launch(default_config):
-
-
     train(default_config)
 
 
@@ -236,10 +237,6 @@ default_config = {
     'continue_train': False,
     'seed': 50,
     'loss_type': 'mse',
-
-
-
-
 }
 
 if __name__ == '__main__':

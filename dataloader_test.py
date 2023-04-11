@@ -41,12 +41,14 @@ data.setup()
 print('batch_size {}'.format(args.batch_size))
 dataloader = data.train_dataloader()
 print('number of images is {}'.format(len(dataloader)))
+
 # %%
 # visualize a batch of images
 plot_batch(dataloader)
 # cine_to_3D(args.dataset_path)
 # crop_data = bbox(str(args.dataset_path.replace('_3D', '')))
 # crop_data.crop_image()
+
 # %%
 # test the training loop
 from tqdm import tqdm
