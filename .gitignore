@@ -1,3 +1,7 @@
+# default folder
+__pycache__/
+
+# dataset
 dataset_3D_crop/
 MMs2/
 *.csv

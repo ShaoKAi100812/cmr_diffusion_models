@@ -1,34 +1,34 @@
 # %%
-from modules.dataloader import *
-from modules.utils import *
+from modules.dataloader import CMRCineDataModule, CMR2DDataModule
+from modules.utils import plot_batch, cine_to_3D, bbox
 import argparse
 import sys
 sys.argv=['']
 del sys
 
-# set some options
-# '/home/bme001/20180883/data/mnms2/sorted/SA/PerDisease'
+# set your own path here, eg, '/home/bme001/20180883/data/mnms2/sorted/SA/PerDisease' (Linux style path)
 default_config = {
-    'dataset_path': '/home/bme001/20180883/data/MMs2/dataset_3D_crop',
-    'run_name': "cmr_DDPM_230323",
+    'dataset_path': r"C:\Users\jrimm\Documents\tue\cmr_diffusion_models\dataset_3D_crop",
+    'run_name': "cmr_DDPM_11042023",
     'epochs': 50,
     'log_interval': 100,
     'batch_size' : 8,
     'image_size' : 128,
-    'num_workers' : 8,
-    'device' : "cpu",
+    'num_workers' : 0,  # default 8, windows cannot handle this
+    'device' : "gpu",
     'lr' : 3e-4,
     'noise_steps' : 500,
     'beta_start':1e-4,
     'beta_end': 0.01,
     }
 
+# set key-value pairs from command line 
 parser = argparse.ArgumentParser()
 for keys in default_config:
     parser.add_argument('--'+keys, default=default_config[keys], type= type(default_config[keys]))
 args = parser.parse_args()
-# CMR2DDataModule
-# CMRCineDataModule
+
+# CMR2DDataModule or CMRCineDataModule class
 data = CMRCineDataModule(
         data_dir=args.dataset_path,
         image_size=args.image_size,
@@ -38,9 +38,10 @@ data = CMRCineDataModule(
     )
 data.prepare_data()
 data.setup()
-print('batch_size {}'.format(args.batch_size))
+print('batch_size = {}'.format(args.batch_size))
 dataloader = data.train_dataloader()
-print('number of images is {}'.format(len(dataloader)))
+# print('number of images is {}'.format(len(dataloader)))
+print('number of batch in train_dataloader is {}'.format(len(dataloader)))
 
 # %%
 # visualize a batch of images
