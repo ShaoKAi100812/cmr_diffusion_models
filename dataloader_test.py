@@ -6,9 +6,11 @@ import sys
 sys.argv=['']
 del sys
 import os
+import torch
 
 PATH = os.path.join(os.getcwd(),"dataset_3D_crop")
 RUN_NAME = "cmr_DDPM_11042023"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # set your own path here, eg, '/home/bme001/20180883/data/mnms2/sorted/SA/PerDisease' (Linux style path)
 default_config = {
@@ -19,7 +21,7 @@ default_config = {
     'batch_size' : 8,
     'image_size' : 128,
     'num_workers' : 0,  # default 8, windows cannot handle this
-    'device' : "cpu",
+    'device' : DEVICE,
     'lr' : 3e-4,
     'noise_steps' : 500,
     'beta_start':1e-4,
@@ -63,7 +65,7 @@ for epoch in range(args.epochs):
         pbar = tqdm(dataloader)
         for i, images in enumerate(pbar):
             labels = images['location'][:,2].to(args.device)
-            images = images['image']['data'].squeeze(dim=-1).to(args.device   )
+            images = images['image']['data'].squeeze(dim=-1).to(args.device)
             images = images.to(args.device   )
             print(images.shape)
             if len(images.shape)<4:
