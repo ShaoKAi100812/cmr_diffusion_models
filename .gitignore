@@ -6,3 +6,6 @@ dataset_3D_crop/
 MMs2/
 *.csv
 *.nii.gz
+
+# testing files
+testing.ipynb

@@ -7,10 +7,14 @@ sys.argv=['']
 del sys
 import os
 import torch
+import warnings
+warnings.filterwarnings('ignore')
 
 PATH = os.path.join(os.getcwd(),"dataset_3D_crop")
 RUN_NAME = "cmr_DDPM_11042023"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+print('device is {}'.format(DEVICE))
 
 # set your own path here, eg, '/home/bme001/20180883/data/mnms2/sorted/SA/PerDisease' (Linux style path)
 default_config = {
@@ -60,14 +64,16 @@ plot_batch(dataloader)
 # test the training loop
 from tqdm import tqdm
 import logging
+
 for epoch in range(args.epochs):
         logging.info(f"Starting epoch {epoch}:")
         pbar = tqdm(dataloader)
         for i, images in enumerate(pbar):
             labels = images['location'][:,2].to(args.device)
             images = images['image']['data'].squeeze(dim=-1).to(args.device)
-            images = images.to(args.device   )
-            print(images.shape)
-            if len(images.shape)<4:
+            images = images.to(args.device)
+            # print(images.shape)
+            if len(images.shape) < 4:
                 print(images)
+
 # %%
