@@ -10,7 +10,7 @@ import torch
 import warnings
 warnings.filterwarnings('ignore')
 
-PATH = os.path.join(os.getcwd(),"dataset_3D_crop")
+PATH = os.path.join(os.getcwd(), "dataset_3D_crop")
 RUN_NAME = "cmr_DDPM_11042023"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -40,17 +40,16 @@ args = parser.parse_args()
 
 # CMR2DDataModule or CMRCineDataModule class
 data = CMRCineDataModule(
-        data_dir=args.dataset_path,
-        image_size=args.image_size,
-        batch_size=args.batch_size,
-        train_val_ratio=0.8,
-        num_workers=args.num_workers,
+        data_dir = args.dataset_path,
+        image_size = args.image_size,
+        batch_size = args.batch_size,
+        train_val_ratio = 0.8,
+        num_workers = args.num_workers,
     )
 data.prepare_data()
 data.setup()
 print('batch_size = {}'.format(args.batch_size))
 dataloader = data.train_dataloader()
-# print('number of images is {}'.format(len(dataloader)))
 print('number of batch in train_dataloader is {}'.format(len(dataloader)))
 
 # %%
