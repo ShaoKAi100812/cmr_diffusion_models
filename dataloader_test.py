@@ -5,17 +5,20 @@ import argparse
 import sys
 sys.argv=['']
 del sys
+import os
+
+PATH = os.path.dirname(os.path.abspath(__file__)) + "\dataset_3D_crop"
 
 # set your own path here, eg, '/home/bme001/20180883/data/mnms2/sorted/SA/PerDisease' (Linux style path)
 default_config = {
-    'dataset_path': r"C:\Users\jrimm\Documents\tue\cmr_diffusion_models\dataset_3D_crop",
+    'dataset_path': PATH,
     'run_name': "cmr_DDPM_11042023",
     'epochs': 50,
     'log_interval': 100,
     'batch_size' : 8,
     'image_size' : 128,
     'num_workers' : 0,  # default 8, windows cannot handle this
-    'device' : "gpu",
+    'device' : "cpu",
     'lr' : 3e-4,
     'noise_steps' : 500,
     'beta_start':1e-4,
@@ -64,3 +67,4 @@ for epoch in range(args.epochs):
             print(images.shape)
             if len(images.shape)<4:
                 print(images)
+# %%
