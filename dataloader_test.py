@@ -7,12 +7,13 @@ sys.argv=['']
 del sys
 import os
 
-PATH = os.path.dirname(os.path.abspath(__file__)) + "\dataset_3D_crop"
+PATH = os.path.join(os.getcwd(),"dataset_3D_crop")
+RUN_NAME = "cmr_DDPM_11042023"
 
 # set your own path here, eg, '/home/bme001/20180883/data/mnms2/sorted/SA/PerDisease' (Linux style path)
 default_config = {
     'dataset_path': PATH,
-    'run_name': "cmr_DDPM_11042023",
+    'run_name': RUN_NAME,
     'epochs': 50,
     'log_interval': 100,
     'batch_size' : 8,
