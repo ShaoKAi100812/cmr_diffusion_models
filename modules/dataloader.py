@@ -135,7 +135,7 @@ class CMR2DDataModule(pl.LightningDataModule):
         sampler = tio.UniformSampler(patch_size)
         # sampler = tio.WeightedSampler(patch_size, probability_map='image') # makes it really slow
         queue = tio.Queue(self.train_set, max_queue_length, patches_per_volume, sampler)
-        return DataLoader(queue, self.batch_size,shuffle=True, num_workers=self.num_workers)
+        return DataLoader(queue, self.batch_size, shuffle=True, num_workers=self.num_workers)
 
     def val_dataloader(self):
         patch_size = (self.image_size, self.image_size, 1)  # 2D slices
@@ -147,7 +147,7 @@ class CMR2DDataModule(pl.LightningDataModule):
         return DataLoader(queue, self.batch_size, shuffle=False, num_workers=self.num_workers)
 
     def test_dataloader(self):
-        return DataLoader(self.test_set, self.batch_size,shuffle=False, num_workers=self.num_workers)
+        return DataLoader(self.test_set, self.batch_size, shuffle=False, num_workers=self.num_workers)
 
 
 class CMRCineDataModule(pl.LightningDataModule):
