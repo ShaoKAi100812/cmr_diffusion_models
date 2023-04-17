@@ -5,6 +5,7 @@ import torchio as tio
 import pytorch_lightning as pl
 import os
 from torch.utils.data import DataLoader
+from collections import deque
 
 # dataloader 
 # class CMR2DDataModule(pl.LightningDataModule):
@@ -219,7 +220,7 @@ class CMRCineDataModule(pl.LightningDataModule):
 
     def get_preprocessing_transform(self):
         preprocess = tio.Compose([
-            tio.Resample((1.25, 1.25, 9.8), image_interpolation ='bspline'),
+            tio.Resample((2, 2, 2), image_interpolation ='bspline'), # resample to 2mm isotropic
             tio.CropOrPad((self.image_size, self.image_size, 13)),
             tio.ZNormalization(),
             tio.RescaleIntensity(out_min_max=(-1, 1),),
@@ -254,20 +255,12 @@ class CMRCineDataModule(pl.LightningDataModule):
         self.train_set = tio.SubjectsDataset(train_subjects, transform=self.transform)
         self.val_set = tio.SubjectsDataset(val_subjects, transform=self.preprocess)
         # self.test_set = tio.SubjectsDataset(self.test_subjects, transform=self.preprocess)
-
-    # def filter_useless_slices(self, queue):
-    #     filter_queue = []
-    #     for i in range(len(queue)):
-    #         # set threshold to 0.1
-    #         if queue[i]['image']['data'].max() < 0.1:
-    #             # TODO: get rid of append
-    #             # TODO: sturture changed, need to fix
-    #             filter_queue.append(queue[i]['image']['data'].tolist()) 
-    #     print(torch.tensor(filter_queue).shape)
-    #     return torch.tensor(filter_queue)
     
     def filter_useless_slices(self, queue):
-        
+        # # TODO: Apply filter to queue
+        # for i in range(len(queue)):
+        #     if queue[i]['image']['data'].max() < 0.1:
+        #         pass
         return queue
 
     def train_dataloader(self):
@@ -277,8 +270,8 @@ class CMRCineDataModule(pl.LightningDataModule):
         sampler = tio.UniformSampler(patch_size)
         # sampler = tio.WeightedSampler(patch_size, probability_map='image') # makes it really slow
         queue = tio.Queue(self.train_set, max_queue_length, patches_per_volume, sampler)
-        # # filter useless slices (with no heart information)
-        # queue = self.filter_useless_slices(queue)
+        # filter useless slices (with no heart information)
+        queue = self.filter_useless_slices(queue)
         return DataLoader(queue, self.batch_size, shuffle=True, num_workers=self.num_workers)
 
     def val_dataloader(self):
