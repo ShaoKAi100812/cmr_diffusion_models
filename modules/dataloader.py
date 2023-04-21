@@ -220,8 +220,8 @@ class CMRCineDataModule(pl.LightningDataModule):
 
     def get_preprocessing_transform(self):
         preprocess = tio.Compose([
-            tio.Resample((2, 2, 2), image_interpolation ='bspline'), # resample to 2mm isotropic
-            tio.CropOrPad((self.image_size, self.image_size, 13)),
+            tio.Resample((1.75, 1.75, 9.8), image_interpolation ='bspline'), # default is (1.25, 1.25, 9.8)
+            tio.CropOrPad((self.image_size, self.image_size, 10)),  # default is (self.image_size, self.image_size, 13)
             tio.ZNormalization(),
             tio.RescaleIntensity(out_min_max=(-1, 1),),
             # tio.CropOrPad((self.image_size,self.image_size,self.get_max_shape(self.subjects))),
