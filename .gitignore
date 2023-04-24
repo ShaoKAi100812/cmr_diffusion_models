@@ -3,8 +3,10 @@ __pycache__/
 
 # dataset
 dataset_3D_crop/
+dataset_3D_crop_small/
 MMs2/
 *.csv
 *.nii.gz
+checkpoints/
 
 # testing files

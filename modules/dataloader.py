@@ -266,7 +266,7 @@ class CMRCineDataModule(pl.LightningDataModule):
     def train_dataloader(self):
         patch_size = (self.image_size, self.image_size, 1)  # 2D slices
         max_queue_length = 1000  # default is 1000
-        patches_per_volume = 13
+        patches_per_volume = 10  # default is 13
         sampler = tio.UniformSampler(patch_size)
         # sampler = tio.WeightedSampler(patch_size, probability_map='image') # makes it really slow
         queue = tio.Queue(self.train_set, max_queue_length, patches_per_volume, sampler)
@@ -277,7 +277,7 @@ class CMRCineDataModule(pl.LightningDataModule):
     def val_dataloader(self):
         patch_size = (self.image_size, self.image_size, 1)  # 2D slices
         max_queue_length = 1000  # default is 1000
-        patches_per_volume = 13
+        patches_per_volume = 10  # default is 13
         sampler = tio.UniformSampler(patch_size)
         # sampler = tio.WeightedSampler(patch_size, probability_map='image')
         queue = tio.Queue(self.val_set, max_queue_length, patches_per_volume, sampler)
