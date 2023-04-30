@@ -7,7 +7,6 @@ import os
 from torch.utils.data import DataLoader
 from collections import deque
 
-# dataloader 
 # class CMR2DDataModule(pl.LightningDataModule):
 #     def __init__(self, data_dir,image_size, batch_size, train_val_ratio, num_workers):
 #         super().__init__()
@@ -153,7 +152,7 @@ from collections import deque
 
 
 class CMRCineDataModule(pl.LightningDataModule):
-    def __init__(self, data_dir,image_size, batch_size, train_val_ratio, num_workers):
+    def __init__(self, data_dir, image_size, batch_size, train_val_ratio, num_workers):
         super().__init__()
         # self.task = task
         self.num_workers = num_workers
